@@ -39,7 +39,7 @@ const Sidebar = ({ role }) => {
                 )}
                 <li><Link to="/contact">Contáctanos</Link></li>
                 <li><Link to="/advisory">Asesorías</Link></li>
-                <li><Link to="/config">Configuración</Link></li>
+                <li><Link to="/profile">Mi Perfil</Link></li>
                 <li><Link to="/logout">Cerrar Sesión</Link></li>
             </ul>
         </div>

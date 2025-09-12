@@ -1,23 +1,23 @@
 const User = require('./User');
 const Group = require('./Group');
-const Progress = require('./Progress');
-const Achievement = require('./Achievement');
-const UserAchievement = require('./UserAchievement');
 const Contact = require('./Contact');
 const Advisory = require('./Advisory');
 const Activity = require('./Activity');
 const ActivityResult = require('./ActivityResult');
 const ActivitySubmission = require('./ActivitySubmission');
+const Recording = require('./Recording');
+const Tracking = require('./Tracking');
 
 const models = {
     User,
     Group,
-    Progress,
-    Achievement,
-    UserAchievement,
     Contact,
     Advisory,
     Activity,
+    ActivityResult,
+    ActivitySubmission,
+    Recording,
+    Tracking,
     ActivityResult,
     ActivitySubmission
 };
