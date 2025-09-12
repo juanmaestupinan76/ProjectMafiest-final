@@ -44,10 +44,18 @@ const ManageUsers = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Confirmación adicional al crear un administrador
+        if (newUser.role === 'administrador') {
+            if (!window.confirm('¿Estás seguro de que quieres crear un nuevo administrador? Esta acción otorgará todos los permisos del sistema al nuevo usuario.')) {
+                return;
+            }
+        }
+
         try {
             const response = await axios.post('/api/users', newUser);
             setUsers([...users, response.data]);
-            setMessage('Usuario creado exitosamente');
+            setMessage(`Usuario ${newUser.role} creado exitosamente`);
             setNewUser({
                 name: '',
                 email: '',
@@ -108,6 +116,7 @@ const ManageUsers = () => {
                         >
                             <option value="estudiante">Estudiante</option>
                             <option value="docente">Docente</option>
+                            <option value="administrador">Administrador</option>
                         </select>
                     </div>
 

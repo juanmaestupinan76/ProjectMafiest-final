@@ -12,10 +12,10 @@ const userController = {
         return res.status(403).json({ error: "Solo el administrador puede crear usuarios con este método" });
       }
 
-      // Validar que el rol enviado sea válido (solo estudiante o docente)
-      const validRoles = ["estudiante", "docente"];
+      // Validar que el rol enviado sea válido (estudiante, docente o administrador)
+      const validRoles = ["estudiante", "docente", "administrador"];
       if (!validRoles.includes(role)) {
-        return res.status(400).json({ error: "Rol inválido. Solo se permiten 'estudiante' o 'docente'" });
+        return res.status(400).json({ error: "Rol inválido. Solo se permiten 'estudiante', 'docente' o 'administrador'" });
       }
 
       // Hashear la contraseña
@@ -84,7 +84,7 @@ const userController = {
           return res.status(403).json({ error: "Solo el administrador puede modificar el rol de un usuario" });
         }
 
-        const validRoles = ["estudiante", "docente", "independiente", "administrador"];
+        const validRoles = ["estudiante", "docente", "administrador"];
         if (!validRoles.includes(role)) {
           return res.status(400).json({ error: "Rol inválido" });
         }
