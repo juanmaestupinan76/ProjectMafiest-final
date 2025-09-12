@@ -1,28 +1,84 @@
 # MaFiEst
 
 ## Descripción del Proyecto
-MaFiEst es una plataforma educativa diseñada para gestionar grupos académicos, cursos y logros de los usuarios. La aplicación permite a los administradores crear grupos, gestionar usuarios y asignar roles, mientras que los docentes pueden subir materiales educativos y los estudiantes pueden seguir su progreso y logros.
+MaFiEst es una plataforma educativa diseñada para gestionar actividades académicas, seguimiento estudiantil y recursos educativos. La aplicación permite a los docentes realizar seguimiento personalizado de estudiantes, gestionar actividades y recursos, mientras que los estudiantes pueden acceder a sus materiales, enviar actividades y consultar su progreso académico.
+
+## Características Principales
+
+### Sistema de Usuarios
+- **Roles de Usuario**:
+  - Administrador: Gestión completa del sistema
+  - Docente: Gestión de actividades y seguimiento
+  - Estudiante: Acceso a actividades y seguimiento personal
+  - Independiente: Acceso a grabaciones y recursos
+
+### Módulo de Actividades
+- **Para Docentes**:
+  - Crear y publicar actividades
+  - Calificar entregas de estudiantes
+  - Seguimiento personalizado de estudiantes
+  - Subir y gestionar grabaciones de clase
+
+- **Para Estudiantes**:
+  - Ver actividades asignadas
+  - Enviar entregas de actividades
+  - Consultar calificaciones
+  - Acceso a grabaciones de clase
+  - Ver su seguimiento académico
+
+### Sistema de Seguimiento
+- **Docentes**:
+  - Registro de seguimiento individual por estudiante
+  - Historial completo de observaciones
+  - Gestión de progreso académico
+
+- **Estudiantes**:
+  - Visualización de su historial de seguimiento
+  - Acceso a comentarios y observaciones de docentes
+
+### Gestión Administrativa
+- **Administradores**:
+  - Gestión de usuarios y roles
+  - Creación y administración de grupos
+  - Control de permisos y accesos
+  - Supervisión general del sistema
+
+### Sistema de Grabaciones
+- **Docentes**:
+  - Subir grabaciones de clases
+  - Organizar contenido por temas
+  - Gestionar acceso a materiales
+
+- **Estudiantes e Independientes**:
+  - Acceso a grabaciones organizadas
+  - Visualización de contenido educativo
+  - Búsqueda y filtrado de materiales
 
 ## Estructura del Proyecto
 
 ### Backend (mafiest_backend)
-- **Controladores**: Manejan la lógica de negocio y las solicitudes HTTP.
-  - `auth.js`: Autenticación de usuarios.
-  - `users.js`: Gestión de usuarios.
-  - `groups.js`: Gestión de grupos académicos.
-  - `progress.js`: Seguimiento del progreso de los estudiantes.
-  - `achievements.js`: Gestión de logros.
-  - `contacts.js`: Manejo de solicitudes de contacto.
-  - `advisories.js`: Manejo de solicitudes de asesoría.
+- **Controladores**:
+  - `auth.js`: Autenticación y gestión de sesiones
+  - `users.js`: Gestión de usuarios y roles
+  - `groups.js`: Administración de grupos académicos
+  - `activities.js`: Gestión de actividades
+  - `activitySubmissions.js`: Manejo de entregas
+  - `activityResults.js`: Calificaciones y resultados
+  - `tracking.js`: Sistema de seguimiento
+  - `recordings.js`: Gestión de grabaciones
+  - `contacts.js`: Manejo de solicitudes de contacto
+  - `advisories.js`: Gestión de asesorías
 
-- **Modelos**: Definición de las tablas en la base de datos PostgreSQL.
-  - `User.js`: Tabla de usuarios.
-  - `Group.js`: Tabla de grupos académicos.
-  - `Progress.js`: Tabla de progreso de cursos.
-  - `Achievement.js`: Tabla de logros.
-  - `UserAchievement.js`: Relación entre usuarios y logros.
-  - `Contact.js`: Tabla de contactos.
-  - `Advisory.js`: Tabla de asesorías.
+- **Modelos**:
+  - `User.js`: Usuarios y roles
+  - `Group.js`: Grupos académicos
+  - `Activity.js`: Actividades y tareas
+  - `ActivitySubmission.js`: Entregas de actividades
+  - `ActivityResult.js`: Resultados y calificaciones
+  - `Recording.js`: Grabaciones y recursos
+  - `Tracking.js`: Seguimiento académico
+  - `Contact.js`: Contactos
+  - `Advisory.js`: Asesorías
 
 - **Rutas**: Definición de los endpoints de la API.
   - `auth.js`: Rutas de autenticación.
@@ -40,17 +96,32 @@ MaFiEst es una plataforma educativa diseñada para gestionar grupos académicos,
   - `middleware.js`: Middlewares para autenticación.
 
 ### Frontend (mafiest_frontend)
-- **Páginas**: Componentes que representan las diferentes vistas de la aplicación.
-  - **Admin**: Panel de control y gestión de usuarios y grupos.
-  - **Estudiante**: Dashboard, cursos, progreso y logros.
-  - **Docente**: Dashboard y subida de materiales.
-  - **Independiente**: Dashboard y acceso a cursos.
+- **Páginas**:
+  - Administrador:
+    - Dashboard administrativo
+    - Gestión de usuarios y roles
+    - Gestión de grupos
+  - Docente:
+    - Dashboard docente
+    - Subir actividades
+    - Calificar entregas
+    - Seguimiento de estudiantes
+    - Gestión de grabaciones
+  - Estudiante:
+    - Dashboard estudiantil
+    - Ver/entregar actividades
+    - Consultar calificaciones
+    - Ver seguimiento personal
+    - Acceso a grabaciones
+  - Independiente:
+    - Dashboard independiente
+    - Acceso a grabaciones
+    - Recursos disponibles
 
-- **Componentes**: Elementos reutilizables de la interfaz.
-  - `Navbar.jsx`: Barra de navegación.
-  - `Sidebar.jsx`: Barra lateral.
-  - `CourseCard.jsx`: Tarjeta de curso.
-  - `AchievementCard.jsx`: Tarjeta de logro.
+- **Componentes**:
+  - `Navbar.jsx`: Barra de navegación responsiva
+  - `Sidebar.jsx`: Panel lateral por rol
+  - `RecordingCard.jsx`: Tarjeta de grabación
 
 - **Rutas**: Configuración de las rutas de la aplicación según el rol del usuario.
 
