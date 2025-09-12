@@ -1,0 +1,92 @@
+.recordings-container {
+    padding: 20px;
+}
+
+.recordings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.recording-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.recording-card:hover {
+    transform: translateY(-5px);
+}
+
+.recording-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.recording-card h3 {
+    padding: 15px;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.recording-card p {
+    padding: 0 15px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.btn-view {
+    display: block;
+    background: #4a90e2;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    margin: 15px;
+    border-radius: 4px;
+}
+
+.btn-add {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.recording-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.recording-form input,
+.recording-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.recording-form textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.recording-form button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}

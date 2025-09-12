@@ -23,9 +23,21 @@ ActivitySubmission.init({
   },
   fileUrl: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: true,
+    validate: {
+      isUrl: true
+    }
+  },
+  status: {
+    type: DataTypes.ENUM('submitted', 'graded'),
+    defaultValue: 'submitted',
+    allowNull: false
   },
   submittedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  lastModifiedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }

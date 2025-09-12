@@ -1,13 +1,82 @@
 const Activity = require("../models/Activity");
+const { Group, User, ActivitySubmission, ActivityResult } = require("../models");
+const { Op } = require("sequelize");
 
 const activityController = {
+  // Obtener actividades según el rol y grupo del usuario
   async getActivities(req, res) {
     try {
-      // Todos los roles pueden ver todas las actividades
-      const activities = await Activity.findAll();
-      res.json(activities);
+      let activities;
+      const include = [
+        {
+          model: User,
+          as: 'teacher',
+          attributes: ['id', 'name']
+        },
+        {
+          model: Group,
+          attributes: ['id', 'name']
+        }
+      ];
+
+      if (req.user.role === 'student') {
+        // Estudiantes solo ven actividades de sus grupos
+        activities = await Activity.findAll({
+          include,
+          where: {
+            groupId: {
+              [Op.in]: req.user.groups.map(g => g.id)
+            },
+            status: 'active'
+          }
+        });
+      } else if (req.user.role === 'teacher') {
+        // Profesores ven sus propias actividades
+        activities = await Activity.findAll({
+          include,
+          where: {
+            teacherId: req.user.id
+          }
+        });
+      } else {
+        // Administradores ven todas
+        activities = await Activity.findAll({ include });
+      }
+
+      // Agregar información de entregas para profesores
+      if (req.user.role === 'teacher') {
+        activities = await Promise.all(activities.map(async (activity) => {
+          const submissions = await ActivitySubmission.count({
+            where: { activityId: activity.id }
+          });
+          const graded = await ActivityResult.count({
+            where: { 
+              submissionId: {
+                [Op.in]: (await ActivitySubmission.findAll({
+                  where: { activityId: activity.id },
+                  attributes: ['id']
+                })).map(s => s.id)
+              }
+            }
+          });
+          return {
+            ...activity.toJSON(),
+            submissionsCount: submissions,
+            gradedCount: graded
+          };
+        }));
+      }
+
+      res.json({
+        success: true,
+        data: activities
+      });
     } catch (error) {
-      res.status(500).json({ error: "Error al obtener actividades" });
+      res.status(500).json({ 
+        success: false, 
+        error: "Error al obtener actividades",
+        message: error.message 
+      });
     }
   },
 
@@ -23,14 +92,56 @@ const activityController = {
 
   async createActivity(req, res) {
     try {
-      if (req.user.role !== "docente" && req.user.role !== "administrador") {
-        return res.status(403).json({ error: "No autorizado para crear actividades" });
+      if (req.user.role !== "teacher" && req.user.role !== "admin") {
+        return res.status(403).json({ 
+          success: false,
+          error: "No autorizado para crear actividades" 
+        });
       }
 
-      const activity = await Activity.create(req.body);
-      res.status(201).json(activity);
+      // Validar que el grupo existe y el profesor pertenece a él
+      const group = await Group.findByPk(req.body.groupId);
+      if (!group) {
+        return res.status(404).json({ 
+          success: false,
+          error: "Grupo no encontrado" 
+        });
+      }
+
+      if (req.user.role === "teacher") {
+        const isTeacherInGroup = await group.hasDocente(req.user.id);
+        if (!isTeacherInGroup) {
+          return res.status(403).json({ 
+            success: false,
+            error: "No eres profesor de este grupo" 
+          });
+        }
+      }
+
+      const activity = await Activity.create({
+        ...req.body,
+        teacherId: req.user.id,
+        status: 'active'
+      });
+
+      res.status(201).json({
+        success: true,
+        message: "Actividad creada exitosamente",
+        data: activity
+      });
     } catch (error) {
-      res.status(500).json({ error: "Error al crear la actividad" });
+      if (error.name === 'SequelizeValidationError') {
+        return res.status(400).json({
+          success: false,
+          error: "Error de validación",
+          errors: error.errors.map(e => e.message)
+        });
+      }
+      res.status(500).json({ 
+        success: false,
+        error: "Error al crear la actividad",
+        message: error.message 
+      });
     }
   },
 
