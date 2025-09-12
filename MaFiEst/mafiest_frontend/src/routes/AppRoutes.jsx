@@ -13,6 +13,7 @@ import GradeActivity from '../pages/teacher/GradeActivity';
 import TrackStudents from '../pages/teacher/TrackStudents';
 import IndependentDashboard from '../pages/independent/Dashboard';
 import Recordings from '../pages/Recordings';
+import ViewTracking from '../pages/student/ViewTracking';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Landing from '../pages/Landing';
@@ -40,6 +41,7 @@ const AppRoutes = () => {
                 <RutaProtegida path="/student/activities" component={ViewActivities} />
                 <RutaProtegida path="/student/submit-activity/:id" component={SubmitActivity} />
                 <RutaProtegida path="/student/grades" component={ViewGrades} />
+                <RutaProtegida path="/student/tracking" component={ViewTracking} />
                 <RutaProtegida path="/recordings" component={Recordings} />
                 
                 <RutaProtegida path="/teacher/dashboard" component={TeacherDashboard} />
