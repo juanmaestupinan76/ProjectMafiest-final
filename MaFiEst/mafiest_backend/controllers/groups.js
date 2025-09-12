@@ -9,7 +9,7 @@ const groupController = {
       const { name, description } = req.body;
       
       // Validar que el usuario es admin
-      if (!validateRole(req.user, ['admin'])) {
+      if (!validateRole(req.user, ['administrador'])) {
         return res.status(403).json({ message: "No tienes permisos para crear grupos" });
       }
 
@@ -160,7 +160,7 @@ const groupController = {
     try {
       const { id } = req.params;
 
-      if (!validateRole(req.user, ['admin'])) {
+      if (!validateRole(req.user, ['administrador'])) {
         return res.status(403).json({ message: "No tienes permisos para eliminar grupos" });
       }
 
@@ -190,7 +190,7 @@ const groupController = {
       const { groupId } = req.params;
       const { userId, role, action } = req.body; // action puede ser 'add' o 'remove'
 
-      if (!validateRole(req.user, ['admin'])) {
+      if (!validateRole(req.user, ['administrador'])) {
         return res.status(403).json({ message: "No tienes permisos para gestionar miembros" });
       }
 
@@ -281,7 +281,7 @@ const groupController = {
       }
 
       // Obtener IDs de usuarios ya en el grupo
-      const currentMembers = role === 'student' 
+      const currentMembers = role === 'estudiante' 
         ? await group.getEstudiantes({ attributes: ['id'] })
         : await group.getDocentes({ attributes: ['id'] });
       
@@ -290,7 +290,7 @@ const groupController = {
       // Buscar usuarios disponibles
       const availableUsers = await User.findAll({
         where: {
-          role: role === 'student' ? 'student' : 'teacher',
+          role: role === 'student' ? 'estudiante' : 'docente',
           id: {
             [Op.notIn]: currentMemberIds
           }

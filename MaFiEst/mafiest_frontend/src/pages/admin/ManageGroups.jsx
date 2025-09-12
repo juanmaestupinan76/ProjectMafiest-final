@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'r                    axios.get(`/api/groups/${groupId}/available-users?role=estudiante`),act';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../../styles/pages/manageGroups.css';
@@ -44,7 +44,7 @@ const ManageGroups = () => {
         try {
             const [studentsRes, teachersRes] = await Promise.all([
                 axios.get(`/api/groups/${groupId}/available-users?role=student`),
-                axios.get(`/api/groups/${groupId}/available-users?role=teacher`)
+                axios.get(`/api/groups/${groupId}/available-users?role=docente`)
             ]);
             setAvailableUsers({
                 students: studentsRes.data.data,

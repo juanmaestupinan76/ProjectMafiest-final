@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const RecordingCard = ({ recording, onDelete, user }) => {
   const canDelete = user.role === 'admin' || 
-                   (user.role === 'teacher' && user.id === recording.createdBy && !recording.forIndependents);
+                   (user.role === 'docente' && user.id === recording.createdBy && !recording.forIndependents);
 
   const handleDelete = async () => {
     if (window.confirm('¿Estás seguro de que deseas eliminar esta grabación?')) {
@@ -76,7 +76,7 @@ const RecordingForm = ({ onSubmit, initialData = null }) => {
         value={formData.imageUrl}
         onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
       />
-      {user.role === 'admin' && (
+                      {user.role === 'administrador' && (
         <label>
           <input
             type="checkbox"
@@ -125,7 +125,7 @@ const Recordings = () => {
 
   return (
     <div className="recordings-container">
-      {(user.role === 'admin' || user.role === 'teacher') && (
+      {(user.role === 'administrador' || user.role === 'docente') && (
         <button onClick={() => setShowForm(!showForm)} className="btn-add">
           {showForm ? 'Cancelar' : '+ Nueva Grabación'}
         </button>

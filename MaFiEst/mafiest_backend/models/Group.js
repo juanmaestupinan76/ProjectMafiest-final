@@ -62,7 +62,7 @@ Group.associate = (models) => {
     foreignKey: 'groupId',
     otherKey: 'userId',
     scope: {
-      role: 'student'
+      role: 'estudiante'
     }
   });
 
@@ -72,7 +72,7 @@ Group.associate = (models) => {
     foreignKey: 'groupId',
     otherKey: 'userId',
     scope: {
-      role: 'teacher'
+      role: 'docente'
     }
   });
 

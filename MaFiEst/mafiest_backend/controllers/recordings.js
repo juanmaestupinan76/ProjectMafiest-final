@@ -21,9 +21,9 @@ exports.createRecording = async (req, res) => {
 exports.getRecordings = async (req, res) => {
     try {
         let query = {};
-        if (req.user.role === 'independent') {
+        if (req.user.role === 'independiente') {
             query.forIndependents = true;
-        } else if (req.user.role === 'student') {
+        } else if (req.user.role === 'estudiante') {
             query.forIndependents = false;
         }
         const recordings = await Recording.find(query);

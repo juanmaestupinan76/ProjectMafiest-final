@@ -26,9 +26,9 @@ const activitySubmissionController = {
         where.activityId = activityId;
       }
 
-      if (req.user.role === "student") {
+      if (req.user.role === "estudiante") {
         where.studentId = req.user.id;
-      } else if (req.user.role === "teacher") {
+      } else if (req.user.role === "docente") {
         // Profesores solo ven entregas de sus actividades
         where['$Activity.teacherId$'] = req.user.id;
       }
@@ -210,7 +210,7 @@ const activitySubmissionController = {
       }
 
       // Solo el estudiante que creó la entrega o un administrador pueden eliminarla
-      if (submission.studentId !== req.user.id && req.user.role !== "admin") {
+      if (submission.studentId !== req.user.id && req.user.role !== "administrador") {
         return res.status(403).json({
           success: false,
           error: "No tienes permiso para eliminar esta entrega"

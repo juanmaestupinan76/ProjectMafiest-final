@@ -19,7 +19,7 @@ const activityController = {
         }
       ];
 
-      if (req.user.role === 'student') {
+      if (req.user.role === 'estudiante') {
         // Estudiantes solo ven actividades de sus grupos
         activities = await Activity.findAll({
           include,
@@ -30,7 +30,7 @@ const activityController = {
             status: 'active'
           }
         });
-      } else if (req.user.role === 'teacher') {
+      } else if (req.user.role === 'docente') {
         // Profesores ven sus propias actividades
         activities = await Activity.findAll({
           include,
@@ -44,7 +44,7 @@ const activityController = {
       }
 
       // Agregar información de entregas para profesores
-      if (req.user.role === 'teacher') {
+      if (req.user.role === 'docente') {
         activities = await Promise.all(activities.map(async (activity) => {
           const submissions = await ActivitySubmission.count({
             where: { activityId: activity.id }
@@ -92,7 +92,7 @@ const activityController = {
 
   async createActivity(req, res) {
     try {
-      if (req.user.role !== "teacher" && req.user.role !== "admin") {
+      if (req.user.role !== "docente" && req.user.role !== "administrador") {
         return res.status(403).json({ 
           success: false,
           error: "No autorizado para crear actividades" 
@@ -108,7 +108,7 @@ const activityController = {
         });
       }
 
-      if (req.user.role === "teacher") {
+      if (req.user.role === "docente") {
         const isTeacherInGroup = await group.hasDocente(req.user.id);
         if (!isTeacherInGroup) {
           return res.status(403).json({ 
