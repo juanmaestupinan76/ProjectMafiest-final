@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../styles/pages/tracking.css';
+import '../../styles/pages/tracking.css';
 
 const TrackStudents = () => {
     const [students, setStudents] = useState([]);

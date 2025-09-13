@@ -7,63 +7,135 @@ import '../styles/components/recordings.css';
 
 const Recordings = () => {
   const [recordings, setRecordings] = useState([]);
+  const [filteredRecordings, setFilteredRecordings] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState('all'); // 'all', 'student', 'independent'
   const { user } = useAuth();
 
   useEffect(() => {
     loadRecordings();
   }, []);
 
+  useEffect(() => {
+    filterRecordings();
+  }, [recordings, filter]);
+
+  const filterRecordings = () => {
+    if (filter === 'all') {
+      setFilteredRecordings(recordings);
+    } else if (filter === 'student') {
+      setFilteredRecordings(recordings.filter(rec => !rec.forIndependents));
+    } else {
+      setFilteredRecordings(recordings.filter(rec => rec.forIndependents));
+    }
+  };
+
   const loadRecordings = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       const response = await axios.get('/api/recordings');
       setRecordings(response.data);
     } catch (error) {
       console.error('Error al cargar grabaciones:', error);
-      alert('Error al cargar las grabaciones');
+      setError('No se pudieron cargar las grabaciones. Por favor, intenta de nuevo.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDelete = async (deletedId) => {
+    if (!window.confirm('¿Estás seguro de que deseas eliminar esta grabación?')) {
+      return;
+    }
+
     try {
+      setError(null);
       await axios.delete(`/api/recordings/${deletedId}`);
       setRecordings(recordings.filter(rec => rec._id !== deletedId));
     } catch (error) {
       console.error('Error al eliminar grabación:', error);
-      alert(error.response?.data?.message || 'Error al eliminar la grabación');
+      setError(error.response?.data?.message || 'Error al eliminar la grabación');
     }
   };
 
   const handleSubmit = async (formData) => {
     try {
-      await axios.post('/api/recordings', formData);
-      await loadRecordings();
+      setError(null);
+      const response = await axios.post('/api/recordings', formData);
+      setRecordings([...recordings, response.data]);
       setShowForm(false);
     } catch (error) {
       console.error('Error al guardar grabación:', error);
-      alert(error.response?.data?.message || 'Error al crear la grabación');
+      setError(error.response?.data?.message || 'Error al crear la grabación');
     }
   };
+
+  const renderFilterButtons = () => (
+    <div className="recordings-filters">
+      <button 
+        className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+        onClick={() => setFilter('all')}
+      >
+        Todas
+      </button>
+      <button 
+        className={`filter-btn ${filter === 'student' ? 'active' : ''}`}
+        onClick={() => setFilter('student')}
+      >
+        Estudiantes
+      </button>
+      <button 
+        className={`filter-btn ${filter === 'independent' ? 'active' : ''}`}
+        onClick={() => setFilter('independent')}
+      >
+        Independientes
+      </button>
+    </div>
+  );
+
+  if (isLoading) {
+    return <div className="recordings-loading">Cargando grabaciones...</div>;
+  }
 
   return (
     <div className="recordings-container">
       {(user.role === 'administrador' || user.role === 'docente') && (
-        <button onClick={() => setShowForm(!showForm)} className="btn-add">
+        <button 
+          onClick={() => setShowForm(!showForm)} 
+          className="btn-add"
+        >
           {showForm ? 'Cancelar' : '+ Nueva Grabación'}
         </button>
       )}
       
       {showForm && <RecordingForm onSubmit={handleSubmit} />}
 
+      {error && (
+        <div className="recordings-error">
+          {error}
+        </div>
+      )}
+
+      {renderFilterButtons()}
+
       <div className="recordings-grid">
-        {recordings.map(recording => (
-          <RecordingCard 
-            key={recording._id} 
-            recording={recording} 
-            onDelete={handleDelete}
-            user={user}
-          />
-        ))}
+        {filteredRecordings.length > 0 ? (
+          filteredRecordings.map(recording => (
+            <RecordingCard 
+              key={recording._id} 
+              recording={recording} 
+              onDelete={handleDelete}
+              user={user}
+            />
+          ))
+        ) : (
+          <div className="recordings-empty">
+            No hay grabaciones disponibles {filter !== 'all' && 'para este filtro'}
+          </div>
+        )}
       </div>
     </div>
   );

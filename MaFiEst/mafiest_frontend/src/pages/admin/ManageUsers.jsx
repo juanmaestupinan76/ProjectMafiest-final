@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../styles/pages/admin.css';
+import '../../styles/pages/admin.css';
 import '../../styles/roles/manageUsers.css';
 
 const ManageUsers = () => {
