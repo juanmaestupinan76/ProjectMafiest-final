@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import RecordingCard from '../components/RecordingCard';
-import RecordingForm from '../components/RecordingForm';
-import '../styles/components/recordings.css';
+import { useAuth } from '../../context/AuthContext';
+import RecordingForm from '../../components/RecordingForm';
+import RecordingCard from '../../components/RecordingCard';
+import '../../styles/components/recordings.css';
 
 const Recordings = () => {
   const [recordings, setRecordings] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const { user } = useAuth();
+
+  const handleDelete = (deletedId) => {
+    setRecordings(recordings.filter(rec => rec._id !== deletedId));
+  };
 
   useEffect(() => {
     loadRecordings();
@@ -20,28 +24,16 @@ const Recordings = () => {
       setRecordings(response.data);
     } catch (error) {
       console.error('Error al cargar grabaciones:', error);
-      alert('Error al cargar las grabaciones');
-    }
-  };
-
-  const handleDelete = async (deletedId) => {
-    try {
-      await axios.delete(`/api/recordings/${deletedId}`);
-      setRecordings(recordings.filter(rec => rec._id !== deletedId));
-    } catch (error) {
-      console.error('Error al eliminar grabación:', error);
-      alert(error.response?.data?.message || 'Error al eliminar la grabación');
     }
   };
 
   const handleSubmit = async (formData) => {
     try {
       await axios.post('/api/recordings', formData);
-      await loadRecordings();
+      loadRecordings();
       setShowForm(false);
     } catch (error) {
       console.error('Error al guardar grabación:', error);
-      alert(error.response?.data?.message || 'Error al crear la grabación');
     }
   };
 

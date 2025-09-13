@@ -33,34 +33,33 @@ const Navbar = () => {
                 <Link to="/">MaFiEst</Link>
             </div>
             <ul className="navbar-links main-links">
-                {userRole === 'administrador' && (
+                {user?.role === 'administrador' && (
                     <>
                         <li><Link to="/admin/dashboard">Dashboard</Link></li>
-                        <li><Link to="/admin/manage-users">Manejo de Usuarios</Link></li>
-                        <li><Link to="/admin/manage-groups">Manejo de Grupos</Link></li>
+                        <li><Link to="/admin/manage-users">Gestión de Usuarios</Link></li>
+                        <li><Link to="/admin/manage-groups">Gestión de Grupos</Link></li>
                     </>
                 )}
-                {userRole === 'docente' && (
+                {user?.role === 'docente' && (
                     <>
                         <li><Link to="/teacher/dashboard">Dashboard</Link></li>
-                        // <li><Link to="/teacher/upload-exams">Subir Actividades</Link></li>
-                        // <li><Link to="/teacher/upload-workshops">Upload Workshops</Link></li>
+                        <li><Link to="/teacher/activities/upload">Subir Actividades</Link></li>
+                        <li><Link to="/teacher/track-students">Seguimiento</Link></li>
                     </>
                 )}
-                {userRole === 'estudiante' && (
+                {user?.role === 'estudiante' && (
                     <>
                         <li><Link to="/student/dashboard">Dashboard</Link></li>
-                        <li><Link to="/student/courses">Cursos</Link></li>
-                        <li><Link to="/student/progress">Progreso</Link></li>
-                        <li><Link to="/student/achievements">Mis logros</Link></li>
+                        <li><Link to="/student/activities">Actividades</Link></li>
+                        <li><Link to="/student/grades">Calificaciones</Link></li>
+                        <li><Link to="/student/tracking">Mi Seguimiento</Link></li>
+                        <li><Link to="/recordings">Grabaciones</Link></li>
                     </>
                 )}
-                {userRole === 'independiente' && (
+                {user?.role === 'independiente' && (
                     <>
                         <li><Link to="/independent/dashboard">Dashboard</Link></li>
-                        <li><Link to="/independent/courses">Cursos</Link></li>
-                        <li><Link to="/independent/progress">Progreso</Link></li>
-                        <li><Link to="/independent/achievements">Mis logros</Link></li>
+                        <li><Link to="/recordings">Grabaciones</Link></li>
                     </>
                 )}
                 <li><Link to="/contact">Contáctanos</Link></li>
