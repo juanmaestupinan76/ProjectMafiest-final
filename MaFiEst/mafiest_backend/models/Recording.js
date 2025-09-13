@@ -1,35 +1,53 @@
-const mongoose = require('mongoose');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../utils/db');
 
-const recordingSchema = new mongoose.Schema({
+class Recording extends Model {}
+
+Recording.init({
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     title: {
-        type: String,
-        required: true
+        type: DataTypes.STRING(100),
+        allowNull: false
     },
     description: {
-        type: String,
-        required: true
+        type: DataTypes.TEXT,
+        allowNull: false
     },
     driveLink: {
-        type: String,
-        required: true
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        validate: {
+            isUrl: true
+        }
     },
     imageUrl: {
-        type: String,
-        required: true
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        validate: {
+            isUrl: true
+        }
     },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    createdById: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Users',
+            key: 'id'
+        }
     },
     forIndependents: {
-        type: Boolean,
-        default: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
+}, {
+    sequelize,
+    modelName: 'Recording',
+    tableName: 'recordings',
+    timestamps: true
 });
 
-module.exports = mongoose.model('Recording', recordingSchema);
+module.exports = Recording;

@@ -26,12 +26,21 @@ const models = {
 // Establecer relaciones
 // =======================
 
-// Logros
-User.hasMany(UserAchievement, { foreignKey: 'usuarioId' });
-UserAchievement.belongsTo(User, { foreignKey: 'usuarioId' });
+// Recordings
+Recording.belongsTo(User, {
+    as: 'creator',
+    foreignKey: 'createdById'
+});
 
-Achievement.hasMany(UserAchievement, { foreignKey: 'logroId' });
-UserAchievement.belongsTo(Achievement, { foreignKey: 'logroId' });
+// Tracking
+Tracking.belongsTo(User, {
+    as: 'student',
+    foreignKey: 'studentId'
+});
+Tracking.belongsTo(User, {
+    as: 'teacher',
+    foreignKey: 'teacherId'
+});
 
 // Grupos
 Group.hasMany(User, { foreignKey: 'grupoId' });
