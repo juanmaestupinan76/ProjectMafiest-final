@@ -1,7 +1,7 @@
 const express = require("express");
-const activitySubmissionController = require("../controllers/activitySubmissionController");
+const activitySubmissionController = require("../controllers/activitySubmissions");
 const { isStudent } = require('../utils/roles');
-
+const { tokenExtractor, userExtractor } = require('../utils/middleware');
 
 const router = express.Router();
 

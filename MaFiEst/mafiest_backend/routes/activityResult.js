@@ -1,8 +1,7 @@
 const express = require("express");
-const activityResultController = require("../controllers/activityResultController");
+const activityResultController = require("../controllers/activityResults");
 const { isTeacher } = require('../utils/roles');
-
-
+const { tokenExtractor, userExtractor } = require('../utils/middleware');
 
 const router = express.Router();
 
