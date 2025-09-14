@@ -26,10 +26,7 @@ Recording.init({
     },
     imageUrl: {
         type: DataTypes.STRING(255),
-        allowNull: false,
-        validate: {
-            isUrl: true
-        }
+        allowNull: true
     },
     createdById: {
         type: DataTypes.INTEGER,

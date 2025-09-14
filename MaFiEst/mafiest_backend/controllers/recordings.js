@@ -2,15 +2,25 @@ const Recording = require('../models/Recording');
 
 exports.createRecording = async (req, res) => {
     try {
-        const { title, description, driveLink, imageUrl, forIndependents } = req.body;
+        // Verificar que solo docentes y administradores puedan crear grabaciones
+        if (req.user.role !== 'docente' && req.user.role !== 'administrador') {
+            return res.status(403).json({ 
+                message: 'Solo los docentes y administradores pueden subir grabaciones' 
+            });
+        }
+
+        const { title, description, driveLink, forIndependents } = req.body;
+
+        // Si es docente, forzar forIndependents a false
         const recording = new Recording({
             title,
             description,
             driveLink,
-            imageUrl,
-            createdBy: req.user.id,
-            forIndependents
+            createdById: req.user.id,
+            // Solo los administradores pueden crear grabaciones para independientes
+            forIndependents: req.user.role === 'administrador' ? forIndependents : false
         });
+        
         await recording.save();
         res.status(201).json(recording);
     } catch (error) {

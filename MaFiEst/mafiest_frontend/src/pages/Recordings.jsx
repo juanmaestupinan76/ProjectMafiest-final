@@ -102,16 +102,22 @@ const Recordings = () => {
 
   return (
     <div className="recordings-container">
-      {(user.role === 'administrador' || user.role === 'docente') && (
-        <button 
-          onClick={() => setShowForm(!showForm)} 
-          className="btn-add"
-        >
-          {showForm ? 'Cancelar' : '+ Nueva Grabación'}
-        </button>
+      {/* Solo docentes y administradores pueden agregar grabaciones */}
+      {(user.role === 'docente' || user.role === 'administrador') && (
+        <>
+          <button onClick={() => setShowForm(!showForm)} className="btn-add">
+            {showForm ? 'Cancelar' : '+ Nueva Grabación'}
+          </button>
+          {showForm && <RecordingForm onSubmit={handleSubmit} />}
+        </>
       )}
-      
-      {showForm && <RecordingForm onSubmit={handleSubmit} />}
+
+      {/* Mensaje informativo para estudiantes */}
+      {user.role === 'estudiante' && (
+        <div className="recordings-info">
+          Aquí encontrarás las grabaciones compartidas por tus profesores.
+        </div>
+      )}
 
       {error && (
         <div className="recordings-error">
@@ -119,7 +125,8 @@ const Recordings = () => {
         </div>
       )}
 
-      {renderFilterButtons()}
+      {/* Solo mostrar filtros al administrador */}
+      {user.role === 'administrador' && renderFilterButtons()}
 
       <div className="recordings-grid">
         {filteredRecordings.length > 0 ? (

@@ -13,18 +13,19 @@ const RecordingCard = ({ recording, onDelete, user }) => {
 
   return (
     <div className="recording-card">
-      <img src={recording.imageUrl} alt={recording.title} />
-      <h3>{recording.title}</h3>
-      <p>{recording.description}</p>
-      <div className="recording-card-actions">
-        <a href={recording.driveLink} target="_blank" rel="noopener noreferrer" className="btn-view">
-          Ver Grabación
-        </a>
-        {canDelete && (
-          <button onClick={handleDelete} className="btn-delete">
-            Eliminar
-          </button>
-        )}
+      <div className="recording-content">
+        <h3>{recording.title}</h3>
+        <p>{recording.description}</p>
+        <div className="recording-card-actions">
+          <a href={recording.driveLink} target="_blank" rel="noopener noreferrer" className="btn-view">
+            Ver Grabación
+          </a>
+          {canDelete && (
+            <button onClick={handleDelete} className="btn-delete">
+              Eliminar
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -36,7 +37,6 @@ RecordingCard.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     driveLink: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired,
     createdBy: PropTypes.string,
     forIndependents: PropTypes.bool
   }).isRequired,

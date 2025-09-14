@@ -4,12 +4,21 @@ import { useAuth } from '../context/AuthContext';
 
 const RecordingForm = ({ onSubmit, initialData = null }) => {
   const { user } = useAuth();
+
+  // Redireccionar si el usuario no es docente ni administrador
+  if (user.role !== 'docente' && user.role !== 'administrador') {
+    return (
+      <div className="recording-form-error">
+        No tienes permisos para subir grabaciones.
+      </div>
+    );
+  }
+
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
     description: initialData?.description || '',
     driveLink: initialData?.driveLink || '',
-    imageUrl: initialData?.imageUrl || '',
-    forIndependents: initialData?.forIndependents || false
+    forIndependents: user.role === 'administrador' ? (initialData?.forIndependents || false) : false
   });
 
   const handleSubmit = (e) => {
@@ -18,7 +27,14 @@ const RecordingForm = ({ onSubmit, initialData = null }) => {
       alert('Por favor completa los campos requeridos');
       return;
     }
-    onSubmit(formData);
+    
+    // Si es docente, asegurar que forIndependents sea false
+    const submitData = {
+      ...formData,
+      forIndependents: user.role === 'administrador' ? formData.forIndependents : false
+    };
+    
+    onSubmit(submitData);
   };
 
   const handleChange = (e) => {
@@ -65,18 +81,6 @@ const RecordingForm = ({ onSubmit, initialData = null }) => {
         />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="imageUrl">URL de la imagen</label>
-        <input
-          type="url"
-          id="imageUrl"
-          name="imageUrl"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          placeholder="https://ejemplo.com/imagen.jpg"
-        />
-      </div>
-
       {user.role === 'administrador' && (
         <div className="form-group">
           <label>
@@ -104,7 +108,6 @@ RecordingForm.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     driveLink: PropTypes.string,
-    imageUrl: PropTypes.string,
     forIndependents: PropTypes.bool
   })
 };
