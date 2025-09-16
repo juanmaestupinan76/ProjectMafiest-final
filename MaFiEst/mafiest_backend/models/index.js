@@ -17,9 +17,7 @@ const models = {
     ActivityResult,
     ActivitySubmission,
     Recording,
-    Tracking,
-    ActivityResult,
-    ActivitySubmission
+    Tracking
 };
 
 // =======================
@@ -60,10 +58,6 @@ Group.belongsToMany(User, {
   foreignKey: 'grupoId',
   otherKey: 'docenteId'
 });
-
-// Progreso
-User.hasMany(Progress, { foreignKey: 'usuarioId' });
-Progress.belongsTo(User, { foreignKey: 'usuarioId' });
 
 // Contacto
 User.hasMany(Contact, { foreignKey: 'usuarioId' });
