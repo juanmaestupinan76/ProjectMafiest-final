@@ -55,14 +55,21 @@ router.post('/:id/members',
     tokenExtractor,
     userExtractor,
     allowRoles(['administrador']),
-    groupsController.addGroupMember
+    groupsController.manageMember
 );
 
-router.delete('/:id/members/:userId',
+router.get('/:id/members',
+    tokenExtractor,
+    userExtractor,
+    allowRoles(['administrador', 'docente']),
+    groupsController.getGroupMembers
+);
+
+router.get('/:id/available-users',
     tokenExtractor,
     userExtractor,
     allowRoles(['administrador']),
-    groupsController.removeGroupMember
+    groupsController.getAvailableUsers
 );
 
 module.exports = router;

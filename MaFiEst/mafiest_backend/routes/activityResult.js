@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const contactsController = require('../controllers/contacts');
+const activityResultController = require('../controllers/activityResults');
 const { tokenExtractor, userExtractor } = require('../utils/middleware');
 
 const allowRoles = (roles) => {
@@ -16,39 +16,44 @@ const allowRoles = (roles) => {
     };
 };
 
+// Obtener todos los resultados de actividades
 router.get('/',
     tokenExtractor,
     userExtractor,
     allowRoles(['administrador', 'docente']),
-    contactsController.getContacts
+    activityResultController.getActivityResults
 );
 
-router.post('/',
-    tokenExtractor,
-    userExtractor,
-    allowRoles(['administrador', 'docente']),
-    contactsController.createContact
-);
-
+// Obtener un resultado específico
 router.get('/:id',
     tokenExtractor,
     userExtractor,
-    allowRoles(['administrador', 'docente']),
-    contactsController.getContactById
+    allowRoles(['administrador', 'docente', 'estudiante']),
+    activityResultController.getActivityResultById
 );
 
+// Crear un nuevo resultado
+router.post('/',
+    tokenExtractor,
+    userExtractor,
+    allowRoles(['docente']),
+    activityResultController.createActivityResult
+);
+
+// Actualizar un resultado
 router.put('/:id',
     tokenExtractor,
     userExtractor,
-    allowRoles(['administrador', 'docente']),
-    contactsController.updateContact
+    allowRoles(['docente']),
+    activityResultController.updateActivityResult
 );
 
+// Eliminar un resultado
 router.delete('/:id',
     tokenExtractor,
     userExtractor,
-    allowRoles(['administrador', 'docente']),
-    contactsController.deleteContact
+    allowRoles(['docente', 'administrador']),
+    activityResultController.deleteActivityResult
 );
 
 module.exports = router;

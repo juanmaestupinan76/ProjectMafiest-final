@@ -20,7 +20,7 @@ router.get('/',
     tokenExtractor,
     userExtractor,
     allowRoles(['administrador', 'docente']),
-    advisoriesController.getAllAdvisories
+    advisoriesController.getAdvisories
 );
 
 router.post('/',
