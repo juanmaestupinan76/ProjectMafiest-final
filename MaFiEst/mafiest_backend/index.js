@@ -1,6 +1,6 @@
+require('dotenv').config();
 const db = require('./utils/db');
 const logger = require('./utils/logger');
-require('dotenv').config();
 
 const app = require('./app');
 
